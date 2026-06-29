@@ -1,0 +1,30 @@
+# ============================================================
+# Yosys Synthesis Script for UART
+# Usage: yosys synth_uart.ys
+# ============================================================
+
+# Read RTL sources
+read_verilog -sv ../rtl/uart_baud_gen.v
+read_verilog -sv ../rtl/uart_fifo.v
+read_verilog -sv ../rtl/uart_tx.v
+read_verilog -sv ../rtl/uart_rx.v
+read_verilog -sv ../rtl/uart_top.v
+
+# Set top module
+hierarchy -check -top uart_top
+
+# Generic synthesis
+synth -top uart_top
+
+# Technology mapping (uncomment for specific target)
+# dfflibmap -liberty my_cells.lib
+# abc -liberty my_cells.lib
+
+# Display statistics
+stat
+
+# Write synthesised netlist
+write_verilog -noattr synth_uart_netlist.v
+
+# Clean up
+clean
